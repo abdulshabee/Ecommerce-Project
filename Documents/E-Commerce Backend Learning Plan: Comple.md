@@ -47,7 +47,7 @@ commerce-craft/
     ├── adr/                         # Architecture Decision Records
     ├── api/                         # API documentation
     └── runbooks/                    # Operational runbooks
-
+```
 ## 🏗️ Architecture Overview
 
 ```text
@@ -68,6 +68,7 @@ commerce-craft/
 │  External Service Clients (Payment, Shipping, Email)         │
 └─────────────────────────────────────────────────────────────┘
 
+```
 ## 🗓️ Sprint Schedule
 
 | Sprint    | Duration | Theme                     | Key Focus                                                                 |

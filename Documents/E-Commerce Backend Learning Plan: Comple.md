@@ -34,8 +34,9 @@ TDD approach: Write failing test first, then implement
 
 Refactor relentlessly: Red-Green-Refactor cycle
 
-**##📁 Project Structure**
-text
+## 📁 Project Structure
+
+```text
 commerce-craft/
 ├── commerce-craft-api/              # REST controllers, DTOs, request/response mapping
 ├── commerce-craft-core/             # Domain models, use cases, ports (zero framework dependencies)
@@ -46,8 +47,10 @@ commerce-craft/
     ├── adr/                         # Architecture Decision Records
     ├── api/                         # API documentation
     └── runbooks/                    # Operational runbooks
-🏗️ Architecture Overview
-text
+
+## 🏗️ Architecture Overview
+
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                        API Module                            │
 │  Controllers, DTOs, Request/Response Mappers, Validation     │
@@ -64,15 +67,21 @@ text
 │  JPA Repositories, MySQL Adapters, Redis Adapters            │
 │  External Service Clients (Payment, Shipping, Email)         │
 └─────────────────────────────────────────────────────────────┘
-🗓️ Sprint Schedule
-Sprint	Duration	Theme	Key Focus
-Sprint 0	1 Week	Foundation & Architecture	Multi-module setup, hexagonal architecture, testing infrastructure
-Sprint 1	2 Weeks	Product Catalog	Complex JPA, full-text search, HATEOAS
-Sprint 2	2 Weeks	User & Security	JWT, OAuth2, MFA, RBAC, GDPR
-Sprint 3	2 Weeks	Shopping Cart	Distributed caching, optimistic locking, session management
-Sprint 4	2 Weeks	Order Management	Event-driven, outbox pattern, saga, CQRS
-Sprint 5	2 Weeks	Payment Integration	Circuit breaker, idempotency, financial integrity
-Sprint 6	2 Weeks	Production Readiness	Observability, performance, deployment, DevOps
+
+## 🗓️ Sprint Schedule
+
+| Sprint    | Duration | Theme                     | Key Focus                                                                 |
+|----------|----------|--------------------------|---------------------------------------------------------------------------|
+| Sprint 0 | 1 Week   | Foundation & Architecture | Multi-module setup, hexagonal architecture, testing infrastructure        |
+| Sprint 1 | 2 Weeks  | Product Catalog           | Complex JPA, full-text search, HATEOAS                                   |
+| Sprint 2 | 2 Weeks  | User & Security           | JWT, OAuth2, MFA, RBAC, GDPR                                             |
+| Sprint 3 | 2 Weeks  | Shopping Cart             | Distributed caching, optimistic locking, session management              |
+| Sprint 4 | 2 Weeks  | Order Management          | Event-driven, outbox pattern, saga, CQRS                                 |
+| Sprint 5 | 2 Weeks  | Payment Integration       | Circuit breaker, idempotency, financial integrity                        |
+| Sprint 6 | 2 Weeks  | Production Readiness      | Observability, performance, deployment, DevOps                           |
+
+
+
 🚀 Sprint 0: Project Foundation & Architecture Setup
 Duration: 1 Week
 Theme: "Build strong foundations before writing business logic"

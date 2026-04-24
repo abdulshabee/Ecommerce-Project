@@ -2,19 +2,25 @@
 
 A comprehensive 12-week journey to build a production-grade e-commerce backend while mastering advanced Spring Boot concepts.
 
-📋 Project Overview
-Aspect	Details
-Project Name	CommerceCraft
-Duration	12 weeks (6 sprints × 2 weeks)
-Java Version	Java 21
-Framework	Spring Boot 3.3+
-Database	MySQL 8.0+
-Cache	Redis 7
-Container	Docker & Docker Compose
-Architecture	Hexagonal Architecture
-Build Tool	Maven (Multi-Module)
-🎯 Learning Philosophy
-"Build strong foundations before writing business logic"
+## 📋 Project Overview
+
+| Aspect            | Details                          |
+|------------------|----------------------------------|
+| Project Name     | CommerceCraft                   |
+| Duration         | 12 weeks (6 sprints × 2 weeks)  |
+| Java Version     | Java 21                         |
+| Framework        | Spring Boot 3.3+                |
+| Database         | MySQL 8.0+                      |
+| Cache            | Redis 7                         |
+| Container        | Docker & Docker Compose         |
+| Architecture     | Hexagonal Architecture          |
+| Build Tool       | Maven (Multi-Module)            |
+
+---
+
+## 🎯 Learning Philosophy
+
+> "Build strong foundations before writing business logic"
 
 6 Sprints, 2 weeks each (adjustable pace)
 
@@ -28,7 +34,7 @@ TDD approach: Write failing test first, then implement
 
 Refactor relentlessly: Red-Green-Refactor cycle
 
-📁 Project Structure
+**##📁 Project Structure**
 text
 commerce-craft/
 ├── commerce-craft-api/              # REST controllers, DTOs, request/response mapping

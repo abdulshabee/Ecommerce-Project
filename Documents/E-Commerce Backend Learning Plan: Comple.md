@@ -1,23 +1,87 @@
-E-Commerce Backend Learning Plan: Complete Sprint Guide
-Project Overview
-Project Name: CommerceCraft
-Tech Stack: Java 21, Spring Boot 3.3+, PostgreSQL 16, Redis 7, Docker
-Architecture Pattern: Hexagonal Architecture
-Duration: 12 weeks (6 sprints × 2 weeks)
+CommerceCraft - E-Commerce Backend Learning Plan
+A comprehensive 12-week journey to build a production-grade e-commerce backend while mastering advanced Spring Boot concepts.
 
-SPRINT 0: Project Foundation & Architecture Setup
-Duration: 1 Week | Theme: "Build strong foundations before writing business logic"
+📋 Project Overview
+Aspect	Details
+Project Name	CommerceCraft
+Duration	12 weeks (6 sprints × 2 weeks)
+Java Version	Java 21
+Framework	Spring Boot 3.3+
+Database	MySQL 8.0+
+Cache	Redis 7
+Container	Docker & Docker Compose
+Architecture	Hexagonal Architecture
+Build Tool	Maven (Multi-Module)
+🎯 Learning Philosophy
+"Build strong foundations before writing business logic"
 
-Sprint 0 Requirements
+6 Sprints, 2 weeks each (adjustable pace)
+
+Build complexity gradually - start simple, refactor often
+
+Focus areas: Architecture, Performance, Resilience, Observability
+
+Production mindset: Logging, monitoring, error handling from day one
+
+TDD approach: Write failing test first, then implement
+
+Refactor relentlessly: Red-Green-Refactor cycle
+
+📁 Project Structure
+text
+commerce-craft/
+├── commerce-craft-api/              # REST controllers, DTOs, request/response mapping
+├── commerce-craft-core/             # Domain models, use cases, ports (zero framework dependencies)
+├── commerce-craft-infrastructure/   # JPA repositories, external service adapters, persistence
+├── commerce-craft-bom/              # Bill of Materials - centralized dependency management
+├── commerce-craft-starter/          # Custom Spring Boot auto-configuration starter
+└── docs/
+    ├── adr/                         # Architecture Decision Records
+    ├── api/                         # API documentation
+    └── runbooks/                    # Operational runbooks
+🏗️ Architecture Overview
+text
+┌─────────────────────────────────────────────────────────────┐
+│                        API Module                            │
+│  Controllers, DTOs, Request/Response Mappers, Validation     │
+└──────────────────────┬──────────────────────────────────────┘
+                       │ depends on
+┌──────────────────────▼──────────────────────────────────────┐
+│                       CORE MODULE                            │
+│  Domain Models, Value Objects, Use Cases, Ports (Interfaces) │
+│  Aggregate Roots, Domain Events, Business Rules              │
+└──────────────────────┬──────────────────────────────────────┘
+                       │ ports implemented by
+┌──────────────────────▼──────────────────────────────────────┐
+│                  INFRASTRUCTURE MODULE                       │
+│  JPA Repositories, MySQL Adapters, Redis Adapters            │
+│  External Service Clients (Payment, Shipping, Email)         │
+└─────────────────────────────────────────────────────────────┘
+🗓️ Sprint Schedule
+Sprint	Duration	Theme	Key Focus
+Sprint 0	1 Week	Foundation & Architecture	Multi-module setup, hexagonal architecture, testing infrastructure
+Sprint 1	2 Weeks	Product Catalog	Complex JPA, full-text search, HATEOAS
+Sprint 2	2 Weeks	User & Security	JWT, OAuth2, MFA, RBAC, GDPR
+Sprint 3	2 Weeks	Shopping Cart	Distributed caching, optimistic locking, session management
+Sprint 4	2 Weeks	Order Management	Event-driven, outbox pattern, saga, CQRS
+Sprint 5	2 Weeks	Payment Integration	Circuit breaker, idempotency, financial integrity
+Sprint 6	2 Weeks	Production Readiness	Observability, performance, deployment, DevOps
+🚀 Sprint 0: Project Foundation & Architecture Setup
+Duration: 1 Week
+Theme: "Build strong foundations before writing business logic"
+Goal: Establish project structure, architecture patterns, and testing infrastructure
+
+🎯 Sprint 0 Requirements
 0.1 Multi-Module Project Setup
+Requirements:
 
-Requirement: Create a Maven multi-module project with proper separation of concerns
+✅ Create a Maven multi-module project with proper separation of concerns
 
-Requirement: Core domain module must have zero framework dependencies
+✅ Core domain module must have zero framework dependencies
 
-Requirement: Infrastructure module should contain all external integrations
+✅ Infrastructure module should contain all external integrations
 
-Requirement: API module should only handle HTTP concerns
+✅ API module should only handle HTTP concerns
 
 Steps to Achieve:
 
@@ -27,23 +91,26 @@ Define modules: commerce-craft-core, commerce-craft-infrastructure, commerce-cra
 
 Configure dependency management section for all third-party libraries
 
-Set up checkstyle, PMD, SpotBugs Maven plugins with custom rulesets
+Set up Checkstyle, PMD, SpotBugs Maven plugins with custom rulesets
 
 Create .editorconfig at project root with consistent formatting rules
 
-Configure Maven enforcer plugin to restrict dependency usage between modules
+Configure Maven Enforcer plugin to restrict dependency usage between modules
 
 Verify core module has zero Spring dependencies by analyzing dependency tree
 
+Create .gitignore with appropriate entries for Java, Maven, IDE files
+
 0.2 Domain Base Classes
+Requirements:
 
-Requirement: Create abstract base classes for all domain objects
+✅ Create abstract base classes for all domain objects
 
-Requirement: Every entity must have creation and modification timestamps
+✅ Every entity must have creation and modification timestamps
 
-Requirement: Domain events must be registered and collected from aggregates
+✅ Domain events must be registered and collected from aggregates
 
-Requirement: Value objects must be immutable with proper equality
+✅ Value objects must be immutable with proper equality
 
 Steps to Achieve:
 
@@ -61,15 +128,18 @@ Add JPA annotations only in infrastructure module, not in core
 
 Create domain event publisher interface as output port
 
+Write unit tests for base class behaviors (event registration, equality)
+
 0.3 Hexagonal Architecture Ports
+Requirements:
 
-Requirement: All external dependencies must be accessed through ports
+✅ All external dependencies must be accessed through ports
 
-Requirement: Use cases should be defined as input port interfaces
+✅ Use cases should be defined as input port interfaces
 
-Requirement: Repository interfaces should be defined as output ports
+✅ Repository interfaces should be defined as output ports
 
-Requirement: No infrastructure code should leak into domain logic
+✅ No infrastructure code should leak into domain logic
 
 Steps to Achieve:
 
@@ -87,19 +157,22 @@ Document each port with JavaDoc explaining its purpose and contract
 
 Create service layer interfaces for complex business operations
 
+Ensure all imports in core module are from Java standard library or core itself
+
 0.4 Testing Infrastructure
+Requirements:
 
-Requirement: Integration tests must run against real database containers
+✅ Integration tests must run against real database containers
 
-Requirement: Tests must be isolated and independent of execution order
+✅ Tests must be isolated and independent of execution order
 
-Requirement: Code coverage must be measured and enforced
+✅ Code coverage must be measured and enforced
 
-Requirement: Architecture rules must be tested automatically
+✅ Architecture rules must be tested automatically
 
 Steps to Achieve:
 
-Add TestContainers dependency with PostgreSQL and Redis modules
+Add TestContainers dependency with MySQL and Redis modules
 
 Create abstract IntegrationTestBase configuring dynamic datasource
 
@@ -113,13 +186,20 @@ Add ArchUnit dependency and create base architecture test class
 
 Write architecture test verifying module dependency rules
 
+Create test fixtures for commonly used test data
+
+Configure Maven Failsafe plugin for integration test execution
+
+Set up test logging configuration for debugging
+
 0.5 Code Quality Gates
+Requirements:
 
-Requirement: Architecture violations must fail the build
+✅ Architecture violations must fail the build
 
-Requirement: Code style violations must fail the build
+✅ Code style violations must fail the build
 
-Requirement: Test coverage below threshold must fail the build
+✅ Test coverage below threshold must fail the build
 
 Steps to Achieve:
 
@@ -129,7 +209,7 @@ Create ArchUnit test verifying ports are in correct packages
 
 Add naming convention rules (repositories end with Repository, etc.)
 
-Configure Maven failsafe plugin for integration tests
+Configure Maven Failsafe plugin for integration tests
 
 Set up build profile for CI with strict quality checks
 
@@ -137,30 +217,43 @@ Create pre-commit hook script for local development
 
 Document architecture decisions in ADRs in /docs/adr folder
 
-Sprint 0 Exit Criteria
-✅ Multi-module project compiles successfully with mvn clean install
+Add SonarQube configuration for code quality analysis
 
-✅ All architecture tests pass with zero violations
+Configure Checkstyle with Google Java Style Guide
 
-✅ Integration test successfully creates and queries a test entity
+Create build validation script running all checks locally
 
-✅ Code quality gates configured and verified locally
+✅ Sprint 0 Exit Criteria
+Multi-module project compiles successfully with mvn clean install
 
-✅ Core module dependency tree shows zero Spring Framework imports
+All architecture tests pass with zero violations
 
-SPRINT 1: Product Catalog Service
-Duration: 2 Weeks | Theme: "Master complex domain modeling and advanced persistence"
+Integration test successfully creates and queries a test entity
 
-Sprint 1 Requirements
+Code quality gates configured and verified locally
+
+Core module dependency tree shows zero Spring Framework imports
+
+All base classes have 100% unit test coverage
+
+TestContainers configured and running in CI pipeline
+
+🚀 Sprint 1: Product Catalog Service
+Duration: 2 Weeks
+Theme: "Master complex domain modeling and advanced persistence"
+Goal: Build a complete product catalog with categories, variants, search, and filtering
+
+🎯 Sprint 1 Requirements
 1.1 Category Management
+Requirements:
 
-Requirement: Categories must support unlimited nesting (hierarchical tree)
+✅ Categories must support unlimited nesting (hierarchical tree)
 
-Requirement: Querying a category must return its full path
+✅ Querying a category must return its full path
 
-Requirement: Category deletion must handle child categories
+✅ Category deletion must handle child categories
 
-Requirement: Category-product count must be accurate and cached
+✅ Category-product count must be accurate and cached
 
 Steps to Achieve:
 
@@ -184,17 +277,20 @@ Implement validation preventing circular parent references
 
 Add endpoint for flat category list, tree structure, and breadcrumbs
 
+MySQL Note: Use WITH RECURSIVE CTE for hierarchical queries. Materialized path works well with MySQL's string functions.
+
 1.2 Product Domain Model
+Requirements:
 
-Requirement: Products must have unique SKU across the system
+✅ Products must have unique SKU across the system
 
-Requirement: Products must support multiple variants (size, color, etc.)
+✅ Products must support multiple variants (size, color, etc.)
 
-Requirement: Product images must be ordered and have metadata
+✅ Product images must be ordered and have metadata
 
-Requirement: Product attributes must be flexible (different per category)
+✅ Product attributes must be flexible (different per category)
 
-Requirement: Products must follow a defined lifecycle state machine
+✅ Products must follow a defined lifecycle state machine
 
 Steps to Achieve:
 
@@ -202,11 +298,11 @@ Create Product aggregate with ProductId as embedded identifier
 
 Design SKU value object with format validation (alphanumeric with hyphens)
 
-Implement ProductVariant entity with option combination map (JSON)
+Implement ProductVariant entity with option combination stored as JSON
 
 Create ProductImage entity with sortOrder, url, altText, isPrimary
 
-Design attributes field as JSONB column for category-specific data
+Design attributes field as JSON column for category-specific data
 
 Implement ProductStatus enum: DRAFT, ACTIVE, DISCONTINUED, ARCHIVED
 
@@ -216,17 +312,20 @@ Add Money value object with currency and amount (BigDecimal)
 
 Implement Dimensions and Weight value objects
 
-Create database index on SKU, category_id, and created_at columns
+Create database indexes on SKU, category_id, and created_at columns
+
+MySQL Note: Use JSON column type for attributes and variant options. MySQL 8.0+ supports JSON functions for querying.
 
 1.3 Product-Specific Pricing
+Requirements:
 
-Requirement: Products must support multiple price types
+✅ Products must support multiple price types
 
-Requirement: Prices must be in different currencies
+✅ Prices must be in different currencies
 
-Requirement: Price changes must be tracked historically
+✅ Price changes must be tracked historically
 
-Requirement: Effective pricing must consider date ranges
+✅ Effective pricing must consider date ranges
 
 Steps to Achieve:
 
@@ -251,46 +350,50 @@ Implement bulk price update with validation
 Design promotional price activation/deactivation scheduler
 
 1.4 Full-Text Search
+Requirements:
 
-Requirement: Product search must support relevance ranking
+✅ Product search must support relevance ranking
 
-Requirement: Search must include product name, description, and category
+✅ Search must include product name, description, and category
 
-Requirement: Autocomplete suggestions must appear as user types
+✅ Autocomplete suggestions must appear as user types
 
-Requirement: Faceted search must filter by category, price range, attributes
+✅ Faceted search must filter by category, price range, attributes
 
 Steps to Achieve:
 
-Add PostgreSQL tsvector column on products table
+Add FULLTEXT index on products table for name and description columns
 
-Create database trigger to auto-generate tsvector from name+description+category
+Create search query using MATCH ... AGAINST with boolean mode
 
-Add GIN index on tsvector column for fast full-text search
+Implement relevance scoring using MySQL's built-in relevance ranking
 
-Implement weighted search (name: A, description: B, category: C)
+Add ngram parser for partial word matching (CJK and autocomplete support)
 
-Create search function using ts_rank with normalization
+Create autocomplete endpoint using LIKE with prefix matching and caching
 
-Add pg_trgm extension for trigram-based similarity search
+Implement faceted search using GROUP BY with COUNT on category, price ranges
 
-Implement autocomplete endpoint using word_similarity() function
-
-Design faceted search using GROUP BY with COUNT on category, price ranges
-
-Create combined search+filter+sort endpoint with pagination
+Design combined search+filter+sort endpoint with pagination
 
 Add search query logging for analytics and relevance tuning
 
+Create search index maintenance strategy (rebuild schedule)
+
+Implement search result caching with short TTL (5 minutes)
+
+MySQL Note: MySQL FULLTEXT search with InnoDB supports natural language and boolean modes. For advanced features, consider integrating Elasticsearch later.
+
 1.5 Product API Design
+Requirements:
 
-Requirement: API must support versioning and backward compatibility
+✅ API must support versioning and backward compatibility
 
-Requirement: Responses must include HATEOAS links
+✅ Responses must include HATEOAS links
 
-Requirement: Clients must be able to request specific response fields
+✅ Clients must be able to request specific response fields
 
-Requirement: Pagination must support offset and cursor-based navigation
+✅ Pagination must support offset and cursor-based navigation
 
 Steps to Achieve:
 
@@ -304,7 +407,7 @@ Implement offset pagination with Pageable interface
 
 Create cursor-based pagination using encoded cursor (productId + createdAt)
 
-Add ETag support using @version field for conditional GET
+Add ETag support using @Version field for conditional GET
 
 Implement Last-Modified header based on updatedAt
 
@@ -315,12 +418,13 @@ Add OpenAPI annotations for automated documentation
 Implement request validation groups (Create vs Update vs Patch)
 
 1.6 Bulk Operations
+Requirements:
 
-Requirement: Support import of products from CSV/JSON
+✅ Support import of products from CSV/JSON
 
-Requirement: Bulk operations must handle partial failures
+✅ Bulk operations must handle partial failures
 
-Requirement: Import status must be trackable
+✅ Import status must be trackable
 
 Steps to Achieve:
 
@@ -344,34 +448,37 @@ Design error report with row number, field, error message
 
 Add webhook notification on import completion
 
-Sprint 1 Exit Criteria
-✅ CRUD operations for products, variants, images, and categories working
+✅ Sprint 1 Exit Criteria
+CRUD operations for products, variants, images, and categories working
 
-✅ Full-text search returns relevant results ranked by relevance
+Full-text search returns relevant results ranked by relevance
 
-✅ Category tree queries execute under 100ms with caching
+Category tree queries execute under 100ms with caching
 
-✅ Product state machine prevents invalid transitions
+Product state machine prevents invalid transitions
 
-✅ API supports filtering, pagination, field selection, and HATEOAS links
+API supports filtering, pagination, field selection, and HATEOAS links
 
-✅ Bulk import handles 1000 products with partial error reporting
+Bulk import handles 1000 products with partial error reporting
 
-✅ 90%+ unit test coverage on domain logic, 80% overall
+90%+ unit test coverage on domain logic, 80% overall
 
-SPRINT 2: User Management & Security
-*Duration: 2 Weeks | Theme: "Enterprise-grade security and compliance"*
+🚀 Sprint 2: User Management & Security
+Duration: 2 Weeks
+Theme: "Enterprise-grade security and compliance"
+Goal: Implement complete authentication, authorization, and user management system
 
-Sprint 2 Requirements
+🎯 Sprint 2 Requirements
 2.1 User Registration & Profile
+Requirements:
 
-Requirement: Users must register with email verification
+✅ Users must register with email verification
 
-Requirement: Users must have multiple addresses (shipping, billing)
+✅ Users must have multiple addresses (shipping, billing)
 
-Requirement: Profile updates must trigger security review for sensitive changes
+✅ Profile updates must trigger security review for sensitive changes
 
-Requirement: User deletion must comply with data retention policies
+✅ User deletion must comply with data retention policies
 
 Steps to Achieve:
 
@@ -396,14 +503,15 @@ Design soft-delete mechanism for GDPR right-to-erasure
 Create scheduled job for permanent deletion after retention period
 
 2.2 Authentication System
+Requirements:
 
-Requirement: Must support JWT-based authentication
+✅ Must support JWT-based authentication
 
-Requirement: Refresh tokens must be rotated on use
+✅ Refresh tokens must be rotated on use
 
-Requirement: Compromised tokens must be revocable
+✅ Compromised tokens must be revocable
 
-Requirement: Must support social login (Google, GitHub) as extension points
+✅ Must support social login (Google, GitHub) as extension points
 
 Steps to Achieve:
 
@@ -428,14 +536,15 @@ Design OAuth2 abstraction layer with provider-specific adapters
 Create /auth/me endpoint returning current user with permissions
 
 2.3 Authorization System
+Requirements:
 
-Requirement: Must support role-based and permission-based access
+✅ Must support role-based and permission-based access
 
-Requirement: Roles must be hierarchical (ADMIN inherits MANAGER permissions)
+✅ Roles must be hierarchical (ADMIN inherits MANAGER permissions)
 
-Requirement: Permissions must be checkable at method level
+✅ Permissions must be checkable at method level
 
-Requirement: Resource ownership must be verifiable (own data only)
+✅ Resource ownership must be verifiable (own data only)
 
 Steps to Achieve:
 
@@ -460,20 +569,21 @@ Implement permission caching with invalidation on role changes
 Design dynamic permission groups for tenant/team-based access
 
 2.4 Multi-Factor Authentication
+Requirements:
 
-Requirement: MFA must be optional but encouraged
+✅ MFA must be optional but encouraged
 
-Requirement: Must support TOTP (Google Authenticator)
+✅ Must support TOTP (Google Authenticator compatible)
 
-Requirement: Backup codes must be provided and one-time use
+✅ Backup codes must be provided and one-time use
 
-Requirement: Trusted devices must be remembered (30 days)
+✅ Trusted devices must be remembered (30 days)
 
 Steps to Achieve:
 
 Implement TOTP secret generation per user (Base32 encoded)
 
-Create QR code generation for easy setup (Google Charts or ZXing library)
+Create QR code generation for easy setup (use ZXing library)
 
 Design TOTP verification with time-step window (allow 1 step drift)
 
@@ -489,15 +599,16 @@ Implement failed MFA attempt tracking with account lockout
 
 Design MFA enrollment flow (verify before enabling)
 
-Create MFA reset process (requires email verification + support)
+Create MFA reset process (requires email verification + support ticket)
 
 2.5 Brute Force Protection
+Requirements:
 
-Requirement: Failed login attempts must be rate-limited
+✅ Failed login attempts must be rate-limited
 
-Requirement: Account lockout must be temporary with exponential backoff
+✅ Account lockout must be temporary with exponential backoff
 
-Requirement: Suspicious activity must generate alerts
+✅ Suspicious activity must generate alerts
 
 Steps to Achieve:
 
@@ -513,7 +624,7 @@ Design suspicious activity detection (new device, new location, unusual time)
 
 Create security event publishing to analytics/alerting system
 
-Add captcha requirement after 3 failed attempts
+Add CAPTCHA requirement after 3 failed attempts
 
 Implement audit logging for all authentication events
 
@@ -522,14 +633,15 @@ Design admin endpoint to unlock accounts
 Create monitoring dashboard for failed login metrics
 
 2.6 Data Privacy & GDPR
+Requirements:
 
-Requirement: Users must be able to export all their data
+✅ Users must be able to export all their data
 
-Requirement: Account deletion must cascade appropriately
+✅ Account deletion must cascade appropriately
 
-Requirement: Data retention policies must be enforced
+✅ Data retention policies must be enforced
 
-Requirement: PII access must be audit-logged
+✅ PII access must be audit-logged
 
 Steps to Achieve:
 
@@ -553,36 +665,41 @@ Implement consent version tracking for proof of consent
 
 Design privacy policy acceptance timestamp tracking
 
-Sprint 2 Exit Criteria
-✅ Registration with email verification working
+✅ Sprint 2 Exit Criteria
+Registration with email verification working
 
-✅ JWT authentication with refresh token rotation implemented
+JWT authentication with refresh token rotation implemented
 
-✅ Role hierarchy and permission checks functioning at method level
+Role hierarchy and permission checks functioning at method level
 
-✅ MFA with TOTP and backup codes fully functional
+MFA with TOTP and backup codes fully functional
 
-✅ Brute force protection preventing rapid login attempts
+Brute force protection preventing rapid login attempts
 
-✅ Data export and account deletion complying with GDPR principles
+Data export and account deletion complying with GDPR principles
 
-✅ All authentication events audit-logged
+All authentication events audit-logged
 
-SPRINT 3: Shopping Cart & Session Management
-Duration: 2 Weeks | Theme: "Distributed state management and cache strategies"
+Security headers configured properly (OWASP recommendations)
 
-Sprint 3 Requirements
+🚀 Sprint 3: Shopping Cart & Session Management
+Duration: 2 Weeks
+Theme: "Distributed state management and cache strategies"
+Goal: Build a high-performance cart system with Redis caching and session handling
+
+🎯 Sprint 3 Requirements
 3.1 Cart Domain Model
+Requirements:
 
-Requirement: Cart must support guest and authenticated users
+✅ Cart must support guest and authenticated users
 
-Requirement: Cart must enforce maximum items limit (100 items)
+✅ Cart must enforce maximum items limit (100 items)
 
-Requirement: Cart item quantity must respect available stock
+✅ Cart item quantity must respect available stock
 
-Requirement: Cart must calculate totals in real-time
+✅ Cart must calculate totals in real-time
 
-Requirement: Cart must have TTL and auto-cleanup
+✅ Cart must have TTL and auto-cleanup
 
 Steps to Achieve:
 
@@ -600,29 +717,30 @@ Implement stock availability check on item add and update
 
 Create price snapshot on item addition (don't recalculate from live price)
 
-Design cart serialization for Redis storage (JSON with GZIP)
+Design cart serialization for Redis storage (JSON with GZIP compression)
 
-Add cart-level metadata (coupon codes, notes, gift wrapping)
+Add cart-level metadata (coupon codes, notes, gift wrapping options)
 
 Implement cart validation rules (minimum order amount, restricted items)
 
 3.2 Dual Storage Strategy
+Requirements:
 
-Requirement: Active carts must live in Redis for fast access
+✅ Active carts must live in Redis for fast access
 
-Requirement: Carts must be persisted to PostgreSQL for recovery
+✅ Carts must be persisted to MySQL for recovery
 
-Requirement: Redis failure must not result in cart loss
+✅ Redis failure must not result in cart loss
 
-Requirement: Cart sync must handle race conditions
+✅ Cart sync must handle race conditions
 
 Steps to Achieve:
 
-Configure Redis with persistence (AOF + RDB) and maxmemory-policy
+Configure Redis with persistence (AOF + RDB) and appropriate maxmemory-policy
 
-Implement Redis repository for cart storage with TTL (30 minutes for guests, 7 days for users)
+Implement Redis repository for cart storage with TTL (30 min guests, 7 days users)
 
-Create PostgreSQL cart table mirroring cart structure
+Create MySQL cart table mirroring cart structure
 
 Design write-through cache: write to DB, then update Redis
 
@@ -639,12 +757,13 @@ Add circuit breaker for Redis operations (fallback to DB only)
 Create cart recovery process on application restart
 
 3.3 Cart Merging (Guest to User)
+Requirements:
 
-Requirement: Guest cart must merge with user cart on login
+✅ Guest cart must merge with user cart on login
 
-Requirement: Duplicate items must be handled intelligently
+✅ Duplicate items must be handled intelligently
 
-Requirement: Merging conflicts must be reported to user
+✅ Merging conflicts must be reported to user
 
 Steps to Achieve:
 
@@ -669,12 +788,13 @@ Create notification if merge couldn't add all items due to stock
 Implement audit log of merge operations
 
 3.4 Concurrent Modification Handling
+Requirements:
 
-Requirement: Multiple tabs/devices modifying cart must not cause data loss
+✅ Multiple tabs/devices modifying cart must not cause data loss
 
-Requirement: Version conflicts must be detected and reported
+✅ Version conflicts must be detected and reported
 
-Requirement: Cart operations must be atomic
+✅ Cart operations must be atomic
 
 Steps to Achieve:
 
@@ -699,14 +819,15 @@ Create conflict resolution examples in API documentation
 Implement cart operation idempotency keys
 
 3.5 Abandoned Cart Recovery
+Requirements:
 
-Requirement: Cart abandonment must be detected after 2 hours of inactivity
+✅ Cart abandonment must be detected after 2 hours of inactivity
 
-Requirement: Recovery emails must be sent at intervals (2h, 24h, 72h)
+✅ Recovery emails must be sent at intervals (2h, 24h, 72h)
 
-Requirement: Users must be able to opt-out of recovery emails
+✅ Users must be able to opt-out of recovery emails
 
-Requirement: Abandoned cart statistics must be tracked
+✅ Abandoned cart statistics must be tracked
 
 Steps to Achieve:
 
@@ -731,12 +852,13 @@ Add analytics events for cart stages (created, abandoned, recovered, converted)
 Design dashboard showing abandonment rate and recovery rate
 
 3.6 Cart Performance Optimization
+Requirements:
 
-Requirement: Cart read operations must complete under 10ms
+✅ Cart read operations must complete under 10ms
 
-Requirement: Cart pricing must not block on external services
+✅ Cart pricing must not block on external services
 
-Requirement: Bulk cart operations must be supported
+✅ Bulk cart operations must be supported
 
 Steps to Achieve:
 
@@ -760,36 +882,39 @@ Add performance metrics for cart operations
 
 Create load test scripts simulating 1000 concurrent carts
 
-Sprint 3 Exit Criteria
-✅ Cart operations working with Redis for sub-10ms reads
+✅ Sprint 3 Exit Criteria
+Cart operations working with Redis for sub-10ms reads
 
-✅ Dual storage ensures no cart data loss on Redis failure
+Dual storage ensures no cart data loss on Redis failure
 
-✅ Guest-to-user cart merging handles all conflict scenarios
+Guest-to-user cart merging handles all conflict scenarios
 
-✅ Concurrent modification detection prevents lost updates
+Concurrent modification detection prevents lost updates
 
-✅ Abandoned cart detection and recovery emails triggering
+Abandoned cart detection and recovery emails triggering
 
-✅ Cart items over 100 or exceeding stock properly rejected
+Cart items over 100 or exceeding stock properly rejected
 
-✅ Cart conversion rate metrics being collected
+Cart conversion rate metrics being collected
 
-SPRINT 4: Order Management System
-*Duration: 2 Weeks | Theme: "Transactional integrity and event-driven workflows"*
+🚀 Sprint 4: Order Management System
+Duration: 2 Weeks
+Theme: "Transactional integrity and event-driven workflows"
+Goal: Build a reliable order management system with event-driven architecture
 
-Sprint 4 Requirements
+🎯 Sprint 4 Requirements
 4.1 Order Domain Model
+Requirements:
 
-Requirement: Order must be an immutable snapshot of cart at purchase time
+✅ Order must be an immutable snapshot of cart at purchase time
 
-Requirement: Order must have unique human-readable order number
+✅ Order must have unique human-readable order number
 
-Requirement: Order must track complete lifecycle (15+ states)
+✅ Order must track complete lifecycle (15+ states)
 
-Requirement: Order lines must preserve price and product details at time of order
+✅ Order lines must preserve price and product details at time of order
 
-Requirement: Order must track all modifications in audit log
+✅ Order must track all modifications in audit log
 
 Steps to Achieve:
 
@@ -797,12 +922,12 @@ Create Order aggregate with complete shipping/billing address snapshot
 
 Design OrderNumber generator: prefix + date + sequence + checksum
 
-Implement sequence number generation using database sequence or Redis
+Implement sequence number generation using MySQL auto-increment or Redis
 
 Create OrderLine entity with product snapshot (name, SKU, price, image URL)
 
-Design OrderStatus enum: PENDING, CONFIRMED, PAYMENT_PENDING, PAID,
-PROCESSING, READY_TO_SHIP, SHIPPED, IN_TRANSIT, DELIVERED,
+Design OrderStatus enum with all states: PENDING, CONFIRMED, PAYMENT_PENDING,
+PAID, PROCESSING, READY_TO_SHIP, SHIPPED, IN_TRANSIT, DELIVERED,
 CANCELLED, REFUNDED, PARTIALLY_REFUNDED, ON_HOLD, FAILED
 
 Implement status transition validation matrix
@@ -813,17 +938,18 @@ Design Money snapshots for all financial fields (subtotal, tax, shipping, discou
 
 Add order-level metadata (coupon used, gift message, delivery instructions)
 
-Implement soft-delete for cancelled orders (retain for audit)
+Implement soft-delete for cancelled orders (retain for audit purposes)
 
 4.2 Order Creation Process
+Requirements:
 
-Requirement: Order creation must be atomic (all-or-nothing)
+✅ Order creation must be atomic (all-or-nothing)
 
-Requirement: Inventory must be reserved immediately on order creation
+✅ Inventory must be reserved immediately on order creation
 
-Requirement: Failed order creation must not reserve inventory
+✅ Failed order creation must not reserve inventory
 
-Requirement: Order creation must be idempotent (duplicate prevention)
+✅ Order creation must be idempotent (duplicate prevention)
 
 Steps to Achieve:
 
@@ -848,14 +974,15 @@ Publish OrderCreatedEvent within transaction boundary
 Implement rollback handler releasing inventory reservations
 
 4.3 Order State Machine
+Requirements:
 
-Requirement: Every status transition must be validated
+✅ Every status transition must be validated
 
-Requirement: Certain transitions must require specific roles/permissions
+✅ Certain transitions must require specific roles/permissions
 
-Requirement: State changes must trigger side effects (emails, inventory updates)
+✅ State changes must trigger side effects (emails, inventory updates)
 
-Requirement: Status change history must be complete and immutable
+✅ Status change history must be complete and immutable
 
 Steps to Achieve:
 
@@ -898,18 +1025,19 @@ Add status aging monitoring (orders stuck in state too long)
 Create admin override for exceptional manual interventions
 
 4.4 Outbox Pattern for Reliable Events
+Requirements:
 
-Requirement: Domain events must be published reliably (no lost events)
+✅ Domain events must be published reliably (no lost events)
 
-Requirement: Event publishing must survive application crashes
+✅ Event publishing must survive application crashes
 
-Requirement: Events must be published in order per aggregate
+✅ Events must be published in order per aggregate
 
-Requirement: Duplicate event delivery must be tolerated by consumers
+✅ Duplicate event delivery must be tolerated by consumers
 
 Steps to Achieve:
 
-Create outbox table: id, aggregateId, eventType, payload (JSONB),
+Create outbox table: id, aggregateId, eventType, payload (JSON),
 createdAt, publishedAt, retryCount, status (PENDING, PUBLISHED, FAILED)
 
 Insert outbox record in same transaction as domain changes
@@ -930,15 +1058,18 @@ Add metrics: outbox size, publish rate, failure rate, lag
 
 Design idempotent event consumers using eventId deduplication
 
+MySQL Note: Use FOR UPDATE SKIP LOCKED for outbox polling to prevent multiple instances processing same events.
+
 4.5 Order Fulfillment Workflow
+Requirements:
 
-Requirement: Orders must support partial fulfillment
+✅ Orders must support partial fulfillment
 
-Requirement: Multiple shipments per order must be tracked
+✅ Multiple shipments per order must be tracked
 
-Requirement: Fulfillment must integrate with inventory management
+✅ Fulfillment must integrate with inventory management
 
-Requirement: Shipping labels must be generatable via carrier API
+✅ Shipping labels must be generatable via carrier API
 
 Steps to Achieve:
 
@@ -963,14 +1094,15 @@ Implement backorder handling for out-of-stock items
 Add fulfillment SLA monitoring and alerts
 
 4.6 Order Query & Reporting
+Requirements:
 
-Requirement: Orders must be searchable by multiple criteria
+✅ Orders must be searchable by multiple criteria
 
-Requirement: Order timeline must show all events chronologically
+✅ Order timeline must show all events chronologically
 
-Requirement: Order metrics must be available for dashboards
+✅ Order metrics must be available for dashboards
 
-Requirement: Order export must support CSV and PDF formats
+✅ Order export must support CSV and PDF formats
 
 Steps to Achieve:
 
@@ -994,34 +1126,39 @@ Design real-time order notification for admin dashboard
 
 Implement order search indexing for performance
 
-Sprint 4 Exit Criteria
-✅ Order creation atomically reserves inventory and persists order
+✅ Sprint 4 Exit Criteria
+Order creation atomically reserves inventory and persists order
 
-✅ State machine enforces all valid and invalid transitions
+State machine enforces all valid and invalid transitions
 
-✅ Outbox pattern ensures zero event loss (verified with chaos testing)
+Outbox pattern ensures zero event loss (verified with chaos testing)
 
-✅ Partial fulfillment supporting multiple shipments per order
+Partial fulfillment supporting multiple shipments per order
 
-✅ Order search returning results under 200ms with filters
+Order search returning results under 200ms with filters
 
-✅ Invoice generation producing correct PDF documents
+Invoice generation producing correct PDF documents
 
-✅ Idempotency preventing duplicate order creation
+Idempotency preventing duplicate order creation
 
-SPRINT 5: Payment Integration & Financial System
-Duration: 2 Weeks | Theme: "External integration resilience and financial accuracy"
+Order timeline showing complete audit history
 
-Sprint 5 Requirements
+🚀 Sprint 5: Payment Integration & Financial System
+Duration: 2 Weeks
+Theme: "External integration resilience and financial accuracy"
+Goal: Implement secure payment processing with external providers and financial integrity
+
+🎯 Sprint 5 Requirements
 5.1 Payment Provider Abstraction
+Requirements:
 
-Requirement: Multiple payment providers must be supported (Stripe, PayPal)
+✅ Multiple payment providers must be supported (Stripe, PayPal)
 
-Requirement: Provider switching must be configuration-based
+✅ Provider switching must be configuration-based
 
-Requirement: Provider-specific features must be abstracted
+✅ Provider-specific features must be abstracted
 
-Requirement: Provider health must be monitored
+✅ Provider health must be monitored
 
 Steps to Achieve:
 
@@ -1046,16 +1183,17 @@ Design mock provider for testing
 Implement provider-specific error mapping to domain exceptions
 
 5.2 Payment Processing
+Requirements:
 
-Requirement: Payment authorization must precede capture
+✅ Payment authorization must precede capture
 
-Requirement: Payment lifecycle must be: AUTHORIZED → CAPTURED → SETTLED
+✅ Payment lifecycle must be: AUTHORIZED → CAPTURED → SETTLED
 
-Requirement: Failed payments must be retryable
+✅ Failed payments must be retryable
 
-Requirement: Duplicate payment submissions must be prevented
+✅ Duplicate payment submissions must be prevented
 
-Requirement: Payment must be atomic with order status update
+✅ Payment must be atomic with order status update
 
 Steps to Achieve:
 
@@ -1081,14 +1219,15 @@ Add payment reconciliation cron job (compare with provider records)
 Design payment timeout (release authorization after 7 days if not captured)
 
 5.3 Refund Management
+Requirements:
 
-Requirement: Full and partial refunds must be supported
+✅ Full and partial refunds must be supported
 
-Requirement: Refunds must be traceable to original payment
+✅ Refunds must be traceable to original payment
 
-Requirement: Refund amount must not exceed captured amount
+✅ Refund amount must not exceed captured amount
 
-Requirement: Multiple refunds per payment must be allowed
+✅ Multiple refunds per payment must be allowed
 
 Steps to Achieve:
 
@@ -1113,14 +1252,15 @@ Implement refund reporting (daily, weekly totals)
 Add refund fraud detection rules
 
 5.4 Financial Data Integrity
+Requirements:
 
-Requirement: All monetary calculations must use BigDecimal
+✅ All monetary calculations must use BigDecimal
 
-Requirement: Financial data must never be modified, only appended
+✅ Financial data must never be modified, only appended
 
-Requirement: Every financial transaction must have audit trail
+✅ Every financial transaction must have audit trail
 
-Requirement: Data integrity must be verifiable via checksums
+✅ Data integrity must be verifiable via checksums
 
 Steps to Achieve:
 
@@ -1145,14 +1285,15 @@ Create financial data archival to append-only storage
 Design retention policy for financial records (7 years minimum)
 
 5.5 Resilience & Fault Tolerance
+Requirements:
 
-Requirement: Payment provider failures must not crash the application
+✅ Payment provider failures must not crash the application
 
-Requirement: Circuit breaker must prevent cascading failures
+✅ Circuit breaker must prevent cascading failures
 
-Requirement: Payment timeouts must have sensible defaults
+✅ Payment timeouts must have sensible defaults
 
-Requirement: Payment queue must handle traffic spikes
+✅ Payment queue must handle traffic spikes
 
 Steps to Achieve:
 
@@ -1177,14 +1318,15 @@ Add payment processing dead letter queue
 Create dashboard showing circuit breaker states and failure rates
 
 5.6 Payment Security
+Requirements:
 
-Requirement: PCI DSS compliance considerations (tokenization)
+✅ PCI DSS compliance considerations (tokenization)
 
-Requirement: Never store raw card numbers
+✅ Never store raw card numbers
 
-Requirement: All payment communications must be encrypted
+✅ All payment communications must be encrypted
 
-Requirement: Payment webhooks must be verified
+✅ Payment webhooks must be verified
 
 Steps to Achieve:
 
@@ -1208,44 +1350,47 @@ Implement rate limiting on payment endpoints
 
 Design fraud detection integration points
 
-Sprint 5 Exit Criteria
-✅ Payment authorization and capture working with Stripe/PayPal
+✅ Sprint 5 Exit Criteria
+Payment authorization and capture working with Stripe/PayPal
 
-✅ Idempotency prevents duplicate charges
+Idempotency prevents duplicate charges
 
-✅ Refunds (full and partial) processing correctly
+Refunds (full and partial) processing correctly
 
-✅ Circuit breaker opens on provider failure and closes after recovery
+Circuit breaker opens on provider failure and closes after recovery
 
-✅ Financial calculations accurate to decimal precision
+Financial calculations accurate to decimal precision
 
-✅ Immutable audit trail recording all financial operations
+Immutable audit trail recording all financial operations
 
-✅ Payment reconciliation matching provider records
+Payment reconciliation matching provider records
 
-✅ Zero raw card data stored, all interactions tokenized
+Zero raw card data stored, all interactions tokenized
 
-SPRINT 6: Production Readiness & Operations
-Duration: 2 Weeks | Theme: "From development to production excellence"
+🚀 Sprint 6: Production Readiness & Operations
+Duration: 2 Weeks
+Theme: "From development to production excellence"
+Goal: Make the application production-ready with observability, monitoring, and deployment
 
-Sprint 6 Requirements
+🎯 Sprint 6 Requirements
 6.1 Observability
+Requirements:
 
-Requirement: All services must expose health metrics
+✅ All services must expose health metrics
 
-Requirement: Distributed tracing must work across all operations
+✅ Distributed tracing must work across all operations
 
-Requirement: Business metrics must be collected (orders/minute, revenue/hour)
+✅ Business metrics must be collected (orders/minute, revenue/hour)
 
-Requirement: Error rates and response times must be monitored
+✅ Error rates and response times must be monitored
 
-Requirement: Logs must be structured and searchable
+✅ Logs must be structured and searchable
 
 Steps to Achieve:
 
 Add Spring Boot Actuator with health, metrics, info endpoints
 
-Implement custom health indicators for database, Redis, payment providers
+Implement custom health indicators for MySQL, Redis, payment providers
 
 Configure Micrometer with Prometheus registry for metrics
 
@@ -1264,14 +1409,15 @@ Configure alerting rules: error rate > 1%, p99 latency > 1s, cart abandonment > 
 Implement log sampling strategy for high-volume endpoints
 
 6.2 Caching Strategy
+Requirements:
 
-Requirement: Multi-level caching must be implemented (L1 in-memory, L2 Redis)
+✅ Multi-level caching must be implemented (L1 in-memory, L2 Redis)
 
-Requirement: Cache invalidation must be immediate on data change
+✅ Cache invalidation must be immediate on data change
 
-Requirement: Cache stampede must be prevented for hot keys
+✅ Cache stampede must be prevented for hot keys
 
-Requirement: Cache hit ratio must be monitored
+✅ Cache hit ratio must be monitored
 
 Steps to Achieve:
 
@@ -1296,20 +1442,21 @@ Create admin endpoint to clear specific cache regions
 Design null cache for cache penetration attacks
 
 6.3 API Performance Optimization
+Requirements:
 
-Requirement: Response times must be under 200ms p95 for reads
+✅ Response times must be under 200ms p95 for reads
 
-Requirement: Response compression must be enabled
+✅ Response compression must be enabled
 
-Requirement: Connection pooling must be optimized
+✅ Connection pooling must be optimized
 
-Requirement: N+1 query problem must be eliminated
+✅ N+1 query problem must be eliminated
 
 Steps to Achieve:
 
 Enable GZIP compression for responses > 1KB
 
-Configure Tomcat/database connection pool sizing (test under load)
+Configure Tomcat/MySQL connection pool sizing (test under load)
 
 Implement @EntityGraph and JOIN FETCH to avoid N+1 queries
 
@@ -1328,14 +1475,15 @@ Create API performance test suite with k6 or JMeter
 Implement HTTP/2 for connection multiplexing
 
 6.4 Rate Limiting
+Requirements:
 
-Requirement: API must be protected from abuse
+✅ API must be protected from abuse
 
-Requirement: Rate limits must be per-user and per-IP
+✅ Rate limits must be per-user and per-IP
 
-Requirement: Rate limit headers must inform clients
+✅ Rate limit headers must inform clients
 
-Requirement: Premium users must have higher limits
+✅ Premium users must have higher limits
 
 Steps to Achieve:
 
@@ -1360,14 +1508,15 @@ Implement rate limit monitoring and alerting
 Create rate limit testing tools for load testing
 
 6.5 Database Migration & Versioning
+Requirements:
 
-Requirement: Database schema must be version-controlled
+✅ Database schema must be version-controlled
 
-Requirement: Migrations must be repeatable and idempotent
+✅ Migrations must be repeatable and idempotent
 
-Requirement: Rollback strategy must exist for failed migrations
+✅ Rollback strategy must exist for failed migrations
 
-Requirement: No data loss during migrations
+✅ No data loss during migrations
 
 Steps to Achieve:
 
@@ -1391,15 +1540,18 @@ Create migration dry-run mode for testing
 
 Document rollback procedures for each migration type
 
+MySQL Note: Use pt-online-schema-change from Percona Toolkit for zero-downtime migrations in production. Always test migrations on a copy of production data.
+
 6.6 Docker & Deployment
+Requirements:
 
-Requirement: Application must be containerized
+✅ Application must be containerized
 
-Requirement: Multi-stage builds must optimize image size
+✅ Multi-stage builds must optimize image size
 
-Requirement: Docker Compose must run entire stack locally
+✅ Docker Compose must run entire stack locally
 
-Requirement: Graceful shutdown must handle in-flight requests
+✅ Graceful shutdown must handle in-flight requests
 
 Steps to Achieve:
 
@@ -1413,7 +1565,7 @@ Implement graceful shutdown hook (30s timeout, complete in-flight requests)
 
 Create health check endpoint used by Docker healthcheck
 
-Design docker-compose.yml with PostgreSQL, Redis, app service
+Design docker-compose.yml with MySQL, Redis, app service
 
 Implement wait-for-it script for dependency ordering
 
@@ -1424,14 +1576,15 @@ Add resource limits on containers
 Design log aggregation using Docker logging drivers
 
 6.7 Configuration Management
+Requirements:
 
-Requirement: Configuration must be external to application
+✅ Configuration must be external to application
 
-Requirement: Secrets must never be in code or images
+✅ Secrets must never be in code or images
 
-Requirement: Configuration changes must not require redeployment
+✅ Configuration changes must not require redeployment
 
-Requirement: Different environments must use different configurations
+✅ Different environments must use different configurations
 
 Steps to Achieve:
 
@@ -1441,7 +1594,7 @@ Create profile-specific configs: dev, staging, prod
 
 Implement environment variable overrides for sensitive values
 
-Design secrets management (Docker secrets, or reference to vault)
+Design secrets management (Docker secrets or reference to vault)
 
 Add @ConfigurationProperties for type-safe configuration
 
@@ -1456,14 +1609,15 @@ Add configuration documentation in README
 Create configuration audit log
 
 6.8 API Documentation
+Requirements:
 
-Requirement: All endpoints must be documented
+✅ All endpoints must be documented
 
-Requirement: Documentation must include request/response examples
+✅ Documentation must include request/response examples
 
-Requirement: Authentication requirements must be clear
+✅ Authentication requirements must be clear
 
-Requirement: Error responses must be documented
+✅ Error responses must be documented
 
 Steps to Achieve:
 
@@ -1488,14 +1642,15 @@ Create Postman collection export from OpenAPI spec
 Maintain CHANGELOG for API versioning changes
 
 6.9 Load Testing & Benchmarking
+Requirements:
 
-Requirement: Critical paths must be load tested
+✅ Critical paths must be load tested
 
-Requirement: Performance baselines must be established
+✅ Performance baselines must be established
 
-Requirement: Bottlenecks must be identified and documented
+✅ Bottlenecks must be identified and documented
 
-Requirement: Scaling limits must be known
+✅ Scaling limits must be known
 
 Steps to Achieve:
 
@@ -1520,20 +1675,21 @@ Identify and document database slow queries
 Create load test report template
 
 6.10 Production Checklist
+Requirements:
 
-Requirement: Application must pass production readiness review
+✅ Application must pass production readiness review
 
-Requirement: Runbook must exist for common operational tasks
+✅ Runbook must exist for common operational tasks
 
-Requirement: Backup and restore procedures must be tested
+✅ Backup and restore procedures must be tested
 
-Requirement: Disaster recovery plan must be documented
+✅ Disaster recovery plan must be documented
 
 Steps to Achieve:
 
 Create production readiness checklist document
 
-Implement database backup schedule (daily full, hourly incremental)
+Implement MySQL backup schedule (daily full, hourly incremental with binlogs)
 
 Test backup restore procedure and document
 
@@ -1551,28 +1707,63 @@ Design disaster recovery process with RTO/RPO targets
 
 Document monitoring dashboards and alert meanings
 
-Sprint 6 Exit Criteria
-✅ Health checks and metrics visible in Grafana dashboard
+MySQL Note: Use mysqldump for logical backups and mysqlpump for parallel exports. Consider Percona XtraBackup for large databases requiring physical hot backups.
 
-✅ Distributed tracing showing complete request flows
+✅ Sprint 6 Exit Criteria
+Health checks and metrics visible in Grafana dashboard
 
-✅ Two-level caching with >80% hit rate on product reads
+Distributed tracing showing complete request flows
 
-✅ API p95 response times under 200ms under load
+Two-level caching with >80% hit rate on product reads
 
-✅ Rate limiting preventing abuse with proper headers
+API p95 response times under 200ms under load
 
-✅ Docker Compose starting full stack with single command
+Rate limiting preventing abuse with proper headers
 
-✅ API documentation complete and accurate
+Docker Compose starting full stack with single command
 
-✅ Load test results documented with baselines
+API documentation complete and accurate
 
-✅ Backup/restore tested and documented
+Load test results documented with baselines
 
-✅ Production runbook written and reviewed
+Backup/restore tested and documented
 
-Continuous Learning Throughout All Sprints
+Production runbook written and reviewed
+
+📊 MySQL-Specific Considerations
+MySQL 8.0+ Features to Leverage
+Feature	Use Case
+JSON Data Type	Product attributes, cart snapshot, outbox payload
+FULLTEXT Index	Product search with natural language and boolean modes
+Window Functions	Sales analytics, ranking, running totals
+Common Table Expressions (CTE)	Category tree queries with WITH RECURSIVE
+CHECK Constraints	Status validation, positive amounts, valid ranges
+Generated Columns	Computed fields for search, hashing
+SKIP LOCKED	Outbox polling without locks
+Invisible Indexes	Testing index impact before dropping
+Resource Groups	Prioritize critical queries
+MySQL Performance Checklist
+Use InnoDB for all tables (ACID compliance, row-level locking)
+
+Set appropriate innodb_buffer_pool_size (70-80% of available RAM)
+
+Configure innodb_flush_log_at_trx_commit for durability vs performance
+
+Use utf8mb4 charset for full Unicode support including emojis
+
+Add proper indexes based on query patterns (use EXPLAIN to verify)
+
+Monitor slow query log with long_query_time = 0.5 seconds
+
+Use connection pooling (HikariCP with appropriate pool size)
+
+Set innodb_lock_wait_timeout to prevent long lock waits
+
+Regular ANALYZE TABLE for optimizer statistics
+
+Implement read replicas for read-heavy operations
+
+🔄 Continuous Learning Practices
 Daily Practices
 Write failing test first, then implement (strict TDD)
 
@@ -1600,12 +1791,13 @@ What technical debt did I accumulate?
 
 What should I research deeper?
 
-Advanced Challenges (Pick One Per Sprint)
-Implement the same feature using WebFlux (reactive) and compare
+🎯 Advanced Challenges
+Pick One Per Sprint to Deepen Learning
+Implement the same feature using WebFlux (reactive) and compare performance
 
-Rewrite a synchronous flow using CompletableFuture for async
+Rewrite a synchronous flow using CompletableFuture for async execution
 
-Add GraalVM native compilation support
+Add GraalVM native compilation support for faster startup
 
 Implement GraphQL endpoint alongside REST for one module
 
@@ -1613,7 +1805,7 @@ Create Kafka event streaming as alternative to outbox polling
 
 Add CDC (Change Data Capture) with Debezium
 
-Implement SAGA orchestration with temporal.io or Camunda
+Implement SAGA orchestration with Temporal.io or Camunda
 
 Add multi-tenancy support (database per tenant)
 
@@ -1621,6 +1813,59 @@ Implement read model projections for CQRS
 
 Create custom Spring Boot starter library
 
-This complete plan ensures that by the end, you've built a production-grade e-commerce backend while learning enterprise patterns, performance optimization, and operational excellence.
+📚 Recommended Resources
+Architecture & Design
+"Domain-Driven Design" by Eric Evans
 
-This response is AI-generated and for reference purposes only.
+"Implementing Domain-Driven Design" by Vaughn Vernon
+
+"Clean Architecture" by Robert C. Martin
+
+"Patterns of Enterprise Application Architecture" by Martin Fowler
+
+Spring Boot
+Spring Boot Official Documentation
+
+"Spring Start Here" by Laurentiu Spilca
+
+"Spring Security in Action" by Laurentiu Spilca
+
+Baeldung.com tutorials
+
+MySQL
+"High Performance MySQL" by Baron Schwartz et al.
+
+MySQL 8.0 Official Documentation
+
+Percona MySQL Performance Blog
+
+Testing & Quality
+"Test-Driven Development" by Kent Beck
+
+"Working Effectively with Legacy Code" by Michael Feathers
+
+ArchUnit Official Documentation
+
+DevOps & Operations
+"Site Reliability Engineering" by Google
+
+"The DevOps Handbook" by Gene Kim
+
+Docker and Kubernetes Documentation
+
+📝 License
+This learning plan is for educational purposes. Build, learn, and share knowledge!
+
+🤝 Contributing
+This is a personal learning project. However, if you follow this plan and find improvements:
+
+Note what worked well and what didn't
+
+Document additional steps you discovered
+
+Share your learnings with the community
+
+Happy Coding! 🚀
+
+"The only way to do great work is to love what you do." - Steve Jobs
+

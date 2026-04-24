@@ -1,4 +1,5 @@
-CommerceCraft - E-Commerce Backend Learning Plan
+# 🛒 CommerceCraft — E-Commerce Backend Learning Plan
+
 A comprehensive 12-week journey to build a production-grade e-commerce backend while mastering advanced Spring Boot concepts.
 
 📋 Project Overview

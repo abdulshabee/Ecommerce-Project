@@ -83,177 +83,140 @@ commerce-craft/
 
 
 
-🚀 Sprint 0: Project Foundation & Architecture Setup
-Duration: 1 Week
-Theme: "Build strong foundations before writing business logic"
-Goal: Establish project structure, architecture patterns, and testing infrastructure
-
-🎯 Sprint 0 Requirements
-0.1 Multi-Module Project Setup
-Requirements:
-
-✅ Create a Maven multi-module project with proper separation of concerns
-
-✅ Core domain module must have zero framework dependencies
-
-✅ Infrastructure module should contain all external integrations
-
-✅ API module should only handle HTTP concerns
-
-Steps to Achieve:
-
-Create parent POM with Spring Boot starter parent, define Java 21
-
-Define modules: commerce-craft-core, commerce-craft-infrastructure, commerce-craft-api, commerce-craft-bom, commerce-craft-starter
-
-Configure dependency management section for all third-party libraries
-
-Set up Checkstyle, PMD, SpotBugs Maven plugins with custom rulesets
-
-Create .editorconfig at project root with consistent formatting rules
-
-Configure Maven Enforcer plugin to restrict dependency usage between modules
-
-Verify core module has zero Spring dependencies by analyzing dependency tree
-
-Create .gitignore with appropriate entries for Java, Maven, IDE files
-
-0.2 Domain Base Classes
-Requirements:
-
-✅ Create abstract base classes for all domain objects
-
-✅ Every entity must have creation and modification timestamps
-
-✅ Domain events must be registered and collected from aggregates
-
-✅ Value objects must be immutable with proper equality
-
-Steps to Achieve:
-
-Create Identifier abstract class with UUID generation and validation
-
-Design AggregateRoot<ID extends Identifier> with domain event collection
-
-Implement BaseEntity with createdAt, updatedAt, version fields
-
-Create DomainEvent interface with eventId, occurredAt, aggregateId
-
-Implement ValueObject base with reflection-based equals/hashCode
-
-Add JPA annotations only in infrastructure module, not in core
-
-Create domain event publisher interface as output port
-
-Write unit tests for base class behaviors (event registration, equality)
-
-0.3 Hexagonal Architecture Ports
-Requirements:
-
-✅ All external dependencies must be accessed through ports
-
-✅ Use cases should be defined as input port interfaces
-
-✅ Repository interfaces should be defined as output ports
-
-✅ No infrastructure code should leak into domain logic
-
-Steps to Achieve:
-
-Create input package for use case interfaces (e.g., CreateProductUseCase)
-
-Create output package for repository and external service interfaces
-
-Define ProductRepository interface in core module without JPA annotations
-
-Create exception base classes: DomainException, EntityNotFoundException, BusinessRuleViolationException
-
-Implement use case classes that depend only on port interfaces
-
-Document each port with JavaDoc explaining its purpose and contract
-
-Create service layer interfaces for complex business operations
-
-Ensure all imports in core module are from Java standard library or core itself
-
-0.4 Testing Infrastructure
-Requirements:
-
-✅ Integration tests must run against real database containers
-
-✅ Tests must be isolated and independent of execution order
-
-✅ Code coverage must be measured and enforced
-
-✅ Architecture rules must be tested automatically
-
-Steps to Achieve:
-
-Add TestContainers dependency with MySQL and Redis modules
-
-Create abstract IntegrationTestBase configuring dynamic datasource
-
-Implement schema-per-test-class strategy using Flyway migrations
-
-Create test data builder classes with randomized but valid data
-
-Configure JaCoCo plugin with 80% minimum coverage (100% for domain)
-
-Add ArchUnit dependency and create base architecture test class
-
-Write architecture test verifying module dependency rules
-
-Create test fixtures for commonly used test data
-
-Configure Maven Failsafe plugin for integration test execution
-
-Set up test logging configuration for debugging
-
-0.5 Code Quality Gates
-Requirements:
-
-✅ Architecture violations must fail the build
-
-✅ Code style violations must fail the build
-
-✅ Test coverage below threshold must fail the build
-
-Steps to Achieve:
-
-Create ArchUnit test checking core module has no Spring imports
-
-Create ArchUnit test verifying ports are in correct packages
-
-Add naming convention rules (repositories end with Repository, etc.)
-
-Configure Maven Failsafe plugin for integration tests
-
-Set up build profile for CI with strict quality checks
-
-Create pre-commit hook script for local development
-
-Document architecture decisions in ADRs in /docs/adr folder
-
-Add SonarQube configuration for code quality analysis
-
-Configure Checkstyle with Google Java Style Guide
-
-Create build validation script running all checks locally
-
-✅ Sprint 0 Exit Criteria
-Multi-module project compiles successfully with mvn clean install
-
-All architecture tests pass with zero violations
-
-Integration test successfully creates and queries a test entity
-
-Code quality gates configured and verified locally
-
-Core module dependency tree shows zero Spring Framework imports
-
-All base classes have 100% unit test coverage
-
-TestContainers configured and running in CI pipeline
+# 🚀 Sprint 0: Project Foundation & Architecture Setup
+
+**Duration:** 1 Week  
+**Theme:** Build strong foundations before writing business logic  
+**Goal:** Establish project structure, architecture patterns, and testing infrastructure  
+
+---
+
+## 🎯 Sprint 0 Requirements
+
+### 0.1 Multi-Module Project Setup
+
+#### ✅ Requirements
+- Create a Maven multi-module project with proper separation of concerns  
+- Core domain module must have zero framework dependencies  
+- Infrastructure module should contain all external integrations  
+- API module should only handle HTTP concerns  
+
+#### 🛠 Steps to Achieve
+- Create parent POM with Spring Boot starter parent, define Java 21  
+- Define modules:  
+  - `commerce-craft-core`  
+  - `commerce-craft-infrastructure`  
+  - `commerce-craft-api`  
+  - `commerce-craft-bom`  
+  - `commerce-craft-starter`  
+- Configure dependency management section for all third-party libraries  
+- Set up Checkstyle, PMD, SpotBugs Maven plugins with custom rulesets  
+- Create `.editorconfig` at project root with consistent formatting rules  
+- Configure Maven Enforcer plugin to restrict dependency usage between modules  
+- Verify core module has zero Spring dependencies by analyzing dependency tree  
+- Create `.gitignore` with appropriate entries for Java, Maven, IDE files  
+
+---
+
+### 0.2 Domain Base Classes
+
+#### ✅ Requirements
+- Create abstract base classes for all domain objects  
+- Every entity must have creation and modification timestamps  
+- Domain events must be registered and collected from aggregates  
+- Value objects must be immutable with proper equality  
+
+#### 🛠 Steps to Achieve
+- Create `Identifier` abstract class with UUID generation and validation  
+- Design `AggregateRoot` with domain event collection  
+- Implement `BaseEntity` with `createdAt`, `updatedAt`, `version` fields  
+- Create `DomainEvent` interface with `eventId`, `occurredAt`, `aggregateId`  
+- Implement `ValueObject` base with reflection-based `equals/hashCode`  
+- Add JPA annotations only in infrastructure module, not in core  
+- Create domain event publisher interface as output port  
+- Write unit tests for base class behaviors (event registration, equality)  
+
+---
+
+### 0.3 Hexagonal Architecture Ports
+
+#### ✅ Requirements
+- All external dependencies must be accessed through ports  
+- Use cases should be defined as input port interfaces  
+- Repository interfaces should be defined as output ports  
+- No infrastructure code should leak into domain logic  
+
+#### 🛠 Steps to Achieve
+- Create `input` package for use case interfaces (e.g., `CreateProductUseCase`)  
+- Create `output` package for repository and external service interfaces  
+- Define `ProductRepository` interface in core module without JPA annotations  
+- Create exception base classes:  
+  - `DomainException`  
+  - `EntityNotFoundException`  
+  - `BusinessRuleViolationException`  
+- Implement use case classes that depend only on port interfaces  
+- Document each port with JavaDoc explaining its purpose and contract  
+- Create service layer interfaces for complex business operations  
+- Ensure all imports in core module are from Java standard library or core itself  
+
+---
+
+### 0.4 Testing Infrastructure
+
+#### ✅ Requirements
+- Integration tests must run against real database containers  
+- Tests must be isolated and independent of execution order  
+- Code coverage must be measured and enforced  
+- Architecture rules must be tested automatically  
+
+#### 🛠 Steps to Achieve
+- Add TestContainers dependency with MySQL and Redis modules  
+- Create abstract `IntegrationTestBase` configuring dynamic datasource  
+- Implement schema-per-test-class strategy using Flyway migrations  
+- Create test data builder classes with randomized but valid data  
+- Configure JaCoCo plugin with:  
+  - 80% minimum coverage  
+  - 100% coverage for domain  
+- Add ArchUnit dependency and create base architecture test class  
+- Write architecture test verifying module dependency rules  
+- Create test fixtures for commonly used test data  
+- Configure Maven Failsafe plugin for integration test execution  
+- Set up test logging configuration for debugging  
+
+---
+
+### 0.5 Code Quality Gates
+
+#### ✅ Requirements
+- Architecture violations must fail the build  
+- Code style violations must fail the build  
+- Test coverage below threshold must fail the build  
+
+#### 🛠 Steps to Achieve
+- Create ArchUnit test ensuring core module has no Spring imports  
+- Create ArchUnit test verifying ports are in correct packages  
+- Add naming convention rules (e.g., repositories end with `Repository`)  
+- Configure Maven Failsafe plugin for integration tests  
+- Set up build profile for CI with strict quality checks  
+- Create pre-commit hook script for local development  
+- Document architecture decisions in ADRs under `/docs/adr`  
+- Add SonarQube configuration for code quality analysis  
+- Configure Checkstyle with Google Java Style Guide  
+- Create build validation script running all checks locally  
+
+---
+
+## ✅ Sprint 0 Exit Criteria
+
+- Multi-module project compiles successfully with `mvn clean install`  
+- All architecture tests pass with zero violations  
+- Integration test successfully creates and queries a test entity  
+- Code quality gates configured and verified locally  
+- Core module dependency tree shows zero Spring Framework imports  
+- All base classes have 100% unit test coverage  
+- TestContainers configured and running in CI pipeline  
+
+---
 
 🚀 Sprint 1: Product Catalog Service
 Duration: 2 Weeks

@@ -7,6 +7,28 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.0.6</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+
+  <properties>
+    <java.version>21</java.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Version properties - centralized management -->
+    <ecommerce.version>1.0.0-SNAPSHOT</ecommerce.version>
+    <spring-cloud.version>2022.0.4</spring-cloud.version>
+    <testcontainers.version>1.19.1</testcontainers.version>
+    <lombok.version>1.18.30</lombok.version>
+    <mapstruct.version>1.5.5.Final</mapstruct.version>
+    <jjwt.version>0.11.5</jjwt.version>
+  </properties>
+
   <modules>
     <module>commerce-craft-core</module>
     <module>commerce-craft-infrastructure</module>
@@ -15,4 +37,98 @@
     <module>commerce-craft-starter</module>
   </modules>
 
+  <dependencyManagement>
+    <dependencies>
+    <!-- Ecommerce Starter -->
+      <dependency>
+        <groupId>com.shoppingCart</groupId>
+        <artifactId>commerce-craft-starter</artifactId>
+        <version>${ecommerce.version}</version>
+      </dependency>
+
+      <!-- Spring Cloud BOM -->
+      <!--<dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency> -->
+
+      <!-- Testcontainers BOM -->
+      <!--<dependency>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>testcontainers-bom</artifactId>
+        <version>${testcontainers.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency> -->
+
+      <!-- JWT -->
+      <!--<dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-api</artifactId>
+        <version>${jjwt.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-impl</artifactId>
+        <version>${jjwt.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-jackson</artifactId>
+        <version>${jjwt.version}</version>
+      </dependency>-->
+
+      <!-- MapStruct -->
+      <!--<dependency>
+        <groupId>org.mapstruct</groupId>
+        <artifactId>mapstruct</artifactId>
+        <version>${mapstruct.version}</version>
+      </dependency>-->
+    </dependencies>
+  </dependencyManagement>
+
+  <!-- Common plugins for all child modules -->
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.11.0</version>
+          <configuration>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
+            <annotationProcessorPaths>
+              <path>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+              </path>
+              <path>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+              </path>
+            </annotationProcessorPaths>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <configuration>
+            <excludes>
+              <exclude>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+              </exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>

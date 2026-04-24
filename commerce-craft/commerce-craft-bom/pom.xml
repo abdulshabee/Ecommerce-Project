@@ -10,9 +10,163 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.shoppingCart</groupId>
+    <name>E-commerce BOM</name>
+    <description>Bill of Materials - Central version management for all e-commerce services</description>
+
     <artifactId>commerce-craft-bom</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
+    <properties>
+        <!-- Database -->
+        <postgresql.version>42.6.0</postgresql.version>
+        <mongodb.version>4.11.1</mongodb.version>
 
+        <!-- Cloud & Messaging -->
+        <redis.version>3.2.0</redis.version>
+        <rabbitmq.version>5.18.0</rabbitmq.version>
+        <kafka.version>3.6.0</kafka.version>
+
+        <!-- Monitoring -->
+        <micrometer.version>1.11.5</micrometer.version>
+        <zipkin.version>2.24.3</zipkin.version>
+
+        <!-- Utils -->
+        <guava.version>32.1.3-jre</guava.version>
+        <commons-lang3.version>3.13.0</commons-lang3.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
+
+        <!-- API Docs -->
+        <springdoc.version>2.2.0</springdoc.version>
+
+        <!-- Testing -->
+        <junit.version>5.10.0</junit.version>
+        <mockito.version>5.5.0</mockito.version>
+
+        <!-- E-commerce specific -->
+        <ecommerce.core.version>1.0.0-SNAPSHOT</ecommerce.core.version>
+        <ecommerce.starter.version>1.0.0-SNAPSHOT</ecommerce.starter.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- ========== E-commerce Internal Modules ========== -->
+            <dependency>
+                <groupId>com.ecommerce</groupId>
+                <artifactId>ecommerce-starter</artifactId>
+                <version>${ecommerce.starter.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.ecommerce</groupId>
+                <artifactId>ecommerce-core</artifactId>
+                <version>${ecommerce.core.version}</version>
+            </dependency>
+
+            <!-- ========== Database Drivers ========== -->
+            <!--<dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mongodb</groupId>
+                <artifactId>mongodb-driver-sync</artifactId>
+                <version>${mongodb.version}</version>
+            </dependency> -->
+
+            <!-- ========== Redis ========== -->
+            <!--<dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${redis.version}</version>
+            </dependency> -->
+
+            <!-- ========== Messaging ========== -->
+            <!--<dependency>
+                <groupId>org.springframework.amqp</groupId>
+                <artifactId>spring-rabbit</artifactId>
+                <version>${rabbitmq.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>${kafka.version}</version>
+            </dependency> -->
+
+            <!-- ========== Monitoring ========== -->
+            <!--<dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-core</artifactId>
+                <version>${micrometer.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.zipkin.reporter2</groupId>
+                <artifactId>zipkin-reporter-brave</artifactId>
+                <version>${zipkin.version}</version>
+            </dependency> -->
+
+            <!-- ========== Utilities ========== -->
+            <!--<dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${commons-collections4.version}</version>
+            </dependency> -->
+
+            <!-- ========== API Documentation ========== -->
+            <!--<dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-common</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency> -->
+
+            <!-- ========== Testing ========== -->
+            <!--<dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency> -->
+        </dependencies>
+    </dependencyManagement>
 </project>

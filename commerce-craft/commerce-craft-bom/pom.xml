@@ -51,13 +51,13 @@
         <dependencies>
             <!-- ========== E-commerce Internal Modules ========== -->
             <dependency>
-                <groupId>com.ecommerce</groupId>
+                <groupId>com.shoppingCart</groupId>
                 <artifactId>ecommerce-starter</artifactId>
                 <version>${ecommerce.starter.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.ecommerce</groupId>
+                <groupId>com.shoopingCart</groupId>
                 <artifactId>ecommerce-core</artifactId>
                 <version>${ecommerce.core.version}</version>
             </dependency>
